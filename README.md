@@ -4,6 +4,7 @@ yolov5 model server using [djl](https://djl.ai/)
 
 [![vertx](https://img.shields.io/badge/vert.x-4.4.0-purple.svg)](https://vertx.io)
 
+- <https://github.com/deepjavalibrary/djl/blob/master/examples/src/main/java/ai/djl/examples/inference/ObjectDetection.java>
 - <https://github.com/deepjavalibrary/djl/issues/1563>
 - <http://djl.ai/engines/pytorch/pytorch-engine/>
 - <https://docs.djl.ai/jupyter/object_detection_with_model_zoo.html>
