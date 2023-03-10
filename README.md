@@ -2,6 +2,14 @@
 
 yolov5 model server using [djl](https://djl.ai/)
 
+## Model preparation.
+
+This server requires a torchscript model and names file. You can convert a `.pt` file to torchscript b by cloning the yolov5 repo and running:
+
+```bash
+python export.py --weights /path/to/model/my-best-model.pt --include torchscript
+```
+
 [![vertx](https://img.shields.io/badge/vert.x-4.4.0-purple.svg)](https://vertx.io)
 
 - <https://github.com/deepjavalibrary/djl/blob/master/examples/src/main/java/ai/djl/examples/inference/ObjectDetection.java>

@@ -14,13 +14,15 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
+import org.mbari.amphiaraus.domain.BoundingBox;
 import org.mbari.amphiaraus.util.NamesUtil;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 // /Users/brian/workspace/M3/03_00_51_14.jpg /Users/brian/Documents/M3/models/mbari315k.torchscript /Users/brian/Documents/M3/models/mbari315k.names
-public class StockYolov5Service {
+public class Yolov5Service {
 
   private final Criteria criteria;
 
@@ -29,16 +31,16 @@ public class StockYolov5Service {
    * @param modelPath The path to a torchscript file. You can use yolov5 to convert a pt file to torchscript
    * @param namesPath The path the names files. Names used to train model
    */
-  public StockYolov5Service(Path modelPath, Path namesPath) {
+  public Yolov5Service(Path modelPath, Path namesPath) {
     this.criteria = buildCriteria(modelPath, namesPath);
   }
 
-  private static Criteria buildCriteria(Path modelPath, Path namesPath) {
+  public static Criteria buildCriteria(Path modelPath, Path namesPath) {
 
     var names = NamesUtil.load(namesPath);
 
     Pipeline pipeline = new Pipeline();
-    pipeline.add(new Resize(640));
+    pipeline.add(new Resize(640)); // required for yolov5? Doesn't work without it
     pipeline.add(new ToTensor());
 
     Translator<Image, DetectedObjects> translator = YoloV5Translator
@@ -56,14 +58,17 @@ public class StockYolov5Service {
       .build();
   }
 
-  public DetectedObjects predict(Path imageFile) throws IOException, ModelException, TranslateException {
+  public List<BoundingBox> predict(Path imageFile) throws IOException, ModelException, TranslateException {
     Image img = ImageFactory.getInstance().fromFile(imageFile);
+
 
     try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
       try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
+        // detections are scaled to 640 * 640 image. We have to scale the boxes back to image coords
         DetectedObjects detection = predictor.predict(img);
-        return detection;
+        return BoundingBox.fromYolov5DetectedObjects(img.getWidth(), img.getHeight(), detection);
       }
     }
   }
+
 }
