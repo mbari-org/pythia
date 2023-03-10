@@ -9,7 +9,8 @@ public class StockYolov5ServiceDemo {
   public static void main(String[] args) throws Exception {
     var imagePath = Paths.get(args[0]);
     var modelPath = Paths.get(args[1]);
-    var service = new StockYolov5Service(modelPath);
+    var namesPath = Paths.get(args[2]);
+    var service = new StockYolov5Service(modelPath, namesPath);
     var detectedObjects = service.predict(imagePath);
     System.out.println(detectedObjects);
   }
