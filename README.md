@@ -18,6 +18,7 @@ python export.py --weights /path/to/model/my-best-model.pt --include torchscript
 - <https://docs.djl.ai/jupyter/object_detection_with_model_zoo.html>
 - <https://github.com/deepjavalibrary/djl-demo>
 - To convert pt files to torchscript, see <https://github.com/ultralytics/yolov5/issues/251>
+- <https://docs.djl.ai/engines/pytorch/pytorch-engine/index.html>
 
 
 This application was generated using <http://start.vertx.io>

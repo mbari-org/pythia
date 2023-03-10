@@ -70,6 +70,19 @@
       <groupId>ai.djl.pytorch</groupId>
       <artifactId>pytorch-engine</artifactId>
     </dependency>
+    <dependency>
+      <groupId>ai.djl.pytorch</groupId>
+      <artifactId>pytorch-native-cpu</artifactId>
+      <classifier>osx-aarch64</classifier>
+      <version>1.13.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>ai.djl.pytorch</groupId>
+      <artifactId>pytorch-jni</artifactId>
+      <version>1.13.1-0.21.0</version>
+      <scope>runtime</scope>
+    </dependency>
 
 
     <dependency>

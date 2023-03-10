@@ -4,14 +4,15 @@ import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.ZooModel;
+import org.mbari.amphiaraus.domain.BoundingBox;
 
 import java.nio.file.Path;
-import java.util.Queue;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class Yolov5QueueService {
 
-  private record Submission(CompletableFuture<DetectedObjects> future, Image image) {
+  private record Submission(CompletableFuture<List<BoundingBox>> future, Image image) {
     Submission(Image image) {
       this(new CompletableFuture<>(), image);
     }
@@ -29,7 +30,7 @@ public class Yolov5QueueService {
     this.namesPath = namesPath;
   }
 
-  public CompletableFuture<DetectedObjects> predict(Image img) {
+  public CompletableFuture<List<BoundingBox>> predict(Image img) {
     // Load the model and start the server if needed
     if (!ok) {
       run();
@@ -57,7 +58,10 @@ public class Yolov5QueueService {
             }
             if (submission != null) {
               var detectedObjects = predictor.predict(submission.image);
-              submission.future.complete(detectedObjects);
+              var boundingBoxes = BoundingBox.fromYolov5DetectedObjects(submission.image.getWidth(),
+                submission.image.getHeight(),
+                detectedObjects);
+              submission.future.complete(boundingBoxes);
             }
           }
         }
