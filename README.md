@@ -1,5 +1,18 @@
 # pythia
 
+## Quick Start for development
+
+```bash
+# start server
+quarkus dev -Dquarkus.args="src/test/resources/models/mbari-mb-benthic-33k.torchscript src/test/resources/models/mbari-mb-benthic-33k.names"
+
+# Send a request
+curl -X POST 'http://localhost:8080/predict/' \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
+```
+
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

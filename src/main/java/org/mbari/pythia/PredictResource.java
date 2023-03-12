@@ -37,14 +37,7 @@ public class PredictResource {
     public CompletionStage<List<BoundingBox>> predict(@RestForm("file") FileUpload file) {
         // https://quarkus.io/guides/resteasy-reactive#handling-multipart-form-data
         var imagePath = file.uploadedFile();
-        System.out.println("");
-//        return CompletableFuture.completedFuture(List.of());
-
-//        return Uni.createFrom()
-//                .completionStage(yolov5.predict(imagePath)
-//                        .thenApply(PredictionResults::boundingBoxes))
-//                .emitOn(Infrastructure.getDefaultExecutor());
-
+        
         return threadContext.withContextCapture(
                 yolov5.predict(imagePath)
                         .thenApplyAsync(PredictionResults::boundingBoxes, managedExecutor));
