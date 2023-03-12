@@ -3,12 +3,14 @@ package org.mbari.pythia.services;
 
 import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.Image;
+import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.ZooModel;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictionResults;
 import org.mbari.pythia.util.TimeUtil;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.*;
 
@@ -33,6 +35,15 @@ public class Yolov5QueueService {
     public Yolov5QueueService(Path modelPath, Path namesPath) {
         this.modelPath = modelPath;
         this.namesPath = namesPath;
+    }
+
+    public CompletableFuture<PredictionResults> predict(Path imagePath) {
+        try {
+            var img = ImageFactory.getInstance().fromFile(imagePath);
+            return predict(img);
+        } catch (IOException e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
     public CompletableFuture<PredictionResults> predict(Image img) {
