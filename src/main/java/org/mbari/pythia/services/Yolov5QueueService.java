@@ -7,12 +7,15 @@ import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.ZooModel;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictionResults;
+import org.mbari.pythia.util.TimeUtil;
 
 import java.nio.file.Path;
 import java.util.concurrent.*;
 
 // TODO look at EventLoop implementation in vert.x book to see if it's more useful
 public class Yolov5QueueService {
+
+    private System.Logger log = System.getLogger(getClass().getName());
 
     private record Submission(CompletableFuture<PredictionResults> future, Image image) {
         Submission(Image image) {
@@ -47,6 +50,7 @@ public class Yolov5QueueService {
 
     private void run() {
         Runnable runnable = () -> {
+            log.log(System.Logger.Level.INFO, "Starting predictor thread using model at " + modelPath);
             ok = true;
             var criteria = Yolov5Service.buildCriteria(modelPath, namesPath);
             try(ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
@@ -74,7 +78,7 @@ public class Yolov5QueueService {
             }
         };
 
-        thread = new Thread(runnable, getClass().getName());
+        thread = new Thread(runnable, getClass().getSimpleName() + "-" + TimeUtil.now());
         thread.setDaemon(true);
         thread.start();
 

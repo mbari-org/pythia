@@ -25,7 +25,7 @@ import java.util.List;
 // /Users/brian/workspace/M3/03_00_51_14.jpg /Users/brian/Documents/M3/models/mbari315k.torchscript /Users/brian/Documents/M3/models/mbari315k.names
 public class Yolov5Service {
 
-    private final Criteria criteria;
+    private final Criteria<Image, DetectedObjects> criteria;
 
     /**
      *
@@ -36,7 +36,7 @@ public class Yolov5Service {
         this.criteria = buildCriteria(modelPath, namesPath);
     }
 
-    public static Criteria buildCriteria(Path modelPath, Path namesPath) {
+    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath) {
 
         var names = NamesUtil.load(namesPath);
 
