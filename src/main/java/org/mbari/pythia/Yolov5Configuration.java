@@ -10,11 +10,11 @@ import java.nio.file.Path;
 @ApplicationScoped
 public class Yolov5Configuration {
 
-//    @Produces
-//    @ApplicationScoped
-//    Yolov5QueueService volov5Service(CommandLine.ParseResult parseResult) {
-//        Path modelPath = parseResult.matchedPositional(0).getValue();
-//        Path namesPath = parseResult.matchedPositional(1).getValue();
-//        return new Yolov5QueueService(modelPath, namesPath);
-//    }
+    @Produces
+    @ApplicationScoped
+    Yolov5QueueService volov5Service(CommandLine.ParseResult parseResult) {
+        Path modelPath = parseResult.matchedPositional(0).getValue();
+        Path namesPath = parseResult.matchedPositional(1).getValue();
+        return new Yolov5QueueService(modelPath, namesPath);
+    }
 }

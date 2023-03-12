@@ -22,31 +22,31 @@ import java.util.concurrent.CompletionStage;
 @Path("/predict")
 public class PredictResource {
 
-//    @Inject
-//    Yolov5QueueService yolov5;
+    @Inject
+    Yolov5QueueService yolov5;
 
     // https://quarkus.io/guides/context-propagation
-//    @Inject
-//    ThreadContext threadContext;
-//
-//    @Inject
-//    ManagedExecutor managedExecutor;
+    @Inject
+    ThreadContext threadContext;
+
+    @Inject
+    ManagedExecutor managedExecutor;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public CompletionStage<List<BoundingBox>> predict(@RestForm("file") FileUpload file) {
         // https://quarkus.io/guides/resteasy-reactive#handling-multipart-form-data
-//        var imagePath = file.uploadedFile();
+        var imagePath = file.uploadedFile();
         System.out.println("");
-        return CompletableFuture.completedFuture(List.of());
+//        return CompletableFuture.completedFuture(List.of());
 
 //        return Uni.createFrom()
 //                .completionStage(yolov5.predict(imagePath)
 //                        .thenApply(PredictionResults::boundingBoxes))
 //                .emitOn(Infrastructure.getDefaultExecutor());
 
-//        return threadContext.withContextCapture(
-//                yolov5.predict(imagePath)
-//                        .thenApplyAsync(PredictionResults::boundingBoxes, managedExecutor));
+        return threadContext.withContextCapture(
+                yolov5.predict(imagePath)
+                        .thenApplyAsync(PredictionResults::boundingBoxes, managedExecutor));
     }
 }
