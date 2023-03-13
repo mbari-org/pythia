@@ -1,7 +1,7 @@
 package org.mbari.pythia.util;
 
 import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.domain.PredictionResults;
+import org.mbari.pythia.domain.PredictResults;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -50,10 +50,10 @@ public class ImageUtil {
         ImageUtil.saveImage(bufferedImage, outputImagePath);
     }
 
-    public static void saveBoundingBoxes(Path outputImagePath, PredictionResults predictionResults)
+    public static void saveBoundingBoxes(Path outputImagePath, PredictResults predictResults)
             throws IOException {
-        var bufferedImage = (BufferedImage) predictionResults.image().getWrappedImage();
-        drawBoundingBoxes(bufferedImage, predictionResults.boundingBoxes());
+        var bufferedImage = (BufferedImage) predictResults.image().getWrappedImage();
+        drawBoundingBoxes(bufferedImage, predictResults.boundingBoxes());
         ImageUtil.saveImage(bufferedImage, outputImagePath);
     }
 }

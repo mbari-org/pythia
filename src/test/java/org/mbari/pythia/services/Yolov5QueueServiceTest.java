@@ -2,8 +2,7 @@ package org.mbari.pythia.services;
 
 import ai.djl.modality.cv.ImageFactory;
 import org.junit.jupiter.api.Test;
-import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.domain.PredictionResults;
+import org.mbari.pythia.domain.PredictResults;
 import org.mbari.pythia.util.ImageUtil;
 import org.mbari.pythia.util.ResourceUtil;
 
@@ -38,7 +37,7 @@ public class Yolov5QueueServiceTest {
         var imageFactory = ImageFactory.getInstance();
 
         // Process in service queye
-        List<CompletableFuture<PredictionResults>> futures = new ArrayList<>();
+        List<CompletableFuture<PredictResults>> futures = new ArrayList<>();
         for (var p : imagePaths) {
             var f = service.predict(imageFactory.fromFile(p));
             futures.add(f);

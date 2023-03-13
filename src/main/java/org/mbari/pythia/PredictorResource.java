@@ -6,6 +6,7 @@ import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictResults;
+import org.mbari.pythia.domain.PredictorResults;
 import org.mbari.pythia.services.Yolov5QueueService;
 
 import javax.inject.Inject;
@@ -16,8 +17,8 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
-@Path("/predict")
-public class PredictResource {
+@Path("/predictor")
+public class PredictorResource {
 
     @Inject
     Yolov5QueueService yolov5;
@@ -29,19 +30,14 @@ public class PredictResource {
     @Inject
     ManagedExecutor managedExecutor;
 
-    /**
-     * Runs inference on an image using Yolov5 and the model provided to the server
-     * @param file The image (as a multipart form)
-     * @return Any inferred predictions found in the image.
-     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public CompletionStage<List<BoundingBox>> predict(@RestForm("file") FileUpload file) {
+    public CompletionStage<PredictorResults> predict(@RestForm("file") FileUpload file) {
         // https://quarkus.io/guides/resteasy-reactive#handling-multipart-form-data
         var imagePath = file.uploadedFile();
 
         return threadContext.withContextCapture(
                 yolov5.predict(imagePath)
-                        .thenApplyAsync(PredictResults::boundingBoxes, managedExecutor));
+                        .thenApplyAsync(PredictorResults::from, managedExecutor));
     }
 }

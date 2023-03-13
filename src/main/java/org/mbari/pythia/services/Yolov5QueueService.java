@@ -7,7 +7,7 @@ import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.ZooModel;
 import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.domain.PredictionResults;
+import org.mbari.pythia.domain.PredictResults;
 import org.mbari.pythia.util.TimeUtil;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class Yolov5QueueService {
 
     private System.Logger log = System.getLogger(getClass().getName());
 
-    private record Submission(CompletableFuture<PredictionResults> future, Image image) {
+    private record Submission(CompletableFuture<PredictResults> future, Image image) {
         Submission(Image image) {
             this(new CompletableFuture<>(), image);
         }
@@ -37,7 +37,7 @@ public class Yolov5QueueService {
         this.namesPath = namesPath;
     }
 
-    public CompletableFuture<PredictionResults> predict(Path imagePath) {
+    public CompletableFuture<PredictResults> predict(Path imagePath) {
         try {
             var img = ImageFactory.getInstance().fromFile(imagePath);
             return predict(img);
@@ -46,7 +46,7 @@ public class Yolov5QueueService {
         }
     }
 
-    public CompletableFuture<PredictionResults> predict(Image img) {
+    public CompletableFuture<PredictResults> predict(Image img) {
         // Load the model and start the server if needed
         if (!ok) {
             run();
@@ -78,7 +78,7 @@ public class Yolov5QueueService {
                             var boundingBoxes = BoundingBox.fromYolov5DetectedObjects(submission.image.getWidth(),
                                     submission.image.getHeight(),
                                     detectedObjects);
-                            var predictionResults = new PredictionResults(submission.image, boundingBoxes);
+                            var predictionResults = new PredictResults(submission.image, boundingBoxes);
                             submission.future.complete(predictionResults);
                         }
                     }

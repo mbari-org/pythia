@@ -4,5 +4,5 @@ import ai.djl.modality.cv.Image;
 
 import java.util.List;
 
-public record PredictionResults(Image image, List<BoundingBox> boundingBoxes) {}
+public record PredictResults(Image image, List<BoundingBox> boundingBoxes) {}
 

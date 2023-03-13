@@ -9,6 +9,7 @@ import java.util.List;
 public record BoundingBox(String concept, double x, double y, double width, double height, double probability) {
 
 
+
     /**
      * Detection output from teh yolov5 detector are done on a
      * 640x640 image and have to be scaled back up.
