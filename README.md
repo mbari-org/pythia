@@ -1,6 +1,6 @@
 # pythia
 
-Pythia is a web service for running generating predictions of what is seen in an image using yolov5 and a custom model.
+Pythia is a web service for generating predictions of what is seen in an image using yolov5 and a custom model.
 
 Web UI is provided by [CVisionAI](https://www.cvisionai.com/)
 
