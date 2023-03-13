@@ -1,5 +1,9 @@
 # pythia
 
+Pythia is a web service for running generating predictions of what is seen in an image using yolov5 and a custom model.
+
+Web UI is provided by [CVisionAI](https://www.cvisionai.com/)
+
 ## Quick Start for development
 
 ```bash
@@ -13,6 +17,9 @@ curl -X POST 'http://localhost:8080/predict/' \
   -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
 ```
 
+
+
+## Quarkus Stuff
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
