@@ -17,6 +17,7 @@ curl -X POST 'http://localhost:8080/predict/' \
   -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
 ```
 
+The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://github.com/fathomnet/models).
 
 
 ## Quarkus Stuff
