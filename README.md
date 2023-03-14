@@ -29,6 +29,7 @@ docker run -d \
   --restart=always \
   -p 8080:8080 \
   -v /path/to/models/:/opt/models \
+  mbari/pythia \
   run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
 ```
 
