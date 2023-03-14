@@ -19,6 +19,27 @@ curl -X POST 'http://localhost:8080/predict/' \
 
 The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://github.com/fathomnet/models).
 
+### Native libraries
+
+Pythia depends on native libraries. These are included via mavn profiles. When building for docker, be sure to disable your host platforms native libs. e.g. 
+
+```bash
+mvn help:active-profiles -P linux-arm -P -macos-arm
+
+The following profiles are active:
+
+ - linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
+```
+
+vs.
+
+```bash
+mvn help:active-profiles -P linux-arm
+
+The following profiles are active:
+
+ - linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
+ - macos-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)```
 
 ## Quarkus Stuff
 
