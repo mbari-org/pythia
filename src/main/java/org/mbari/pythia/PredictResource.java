@@ -6,7 +6,7 @@ import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictResults;
-import org.mbari.pythia.services.Yolov5QueueService;
+import org.mbari.pythia.services.Yolov5EventQueue;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -20,7 +20,7 @@ import java.util.concurrent.CompletionStage;
 public class PredictResource {
 
     @Inject
-    Yolov5QueueService yolov5;
+    Yolov5EventQueue yolov5;
 
     // https://quarkus.io/guides/context-propagation
     @Inject

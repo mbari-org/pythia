@@ -4,24 +4,21 @@ import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.context.ThreadContext;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
-import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.domain.PredictResults;
 import org.mbari.pythia.domain.PredictorResults;
-import org.mbari.pythia.services.Yolov5QueueService;
+import org.mbari.pythia.services.Yolov5EventQueue;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 @Path("/predictor")
 public class PredictorResource {
 
     @Inject
-    Yolov5QueueService yolov5;
+    Yolov5EventQueue yolov5;
 
     // https://quarkus.io/guides/context-propagation
     @Inject
@@ -30,6 +27,11 @@ public class PredictorResource {
     @Inject
     ManagedExecutor managedExecutor;
 
+    /**
+     * Prediction results that match the output of Class to match the output of https://github.com/mbari-org/keras-model-server-fast-api
+     * @param file
+     * @return
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public CompletionStage<PredictorResults> predict(@RestForm("file") FileUpload file) {

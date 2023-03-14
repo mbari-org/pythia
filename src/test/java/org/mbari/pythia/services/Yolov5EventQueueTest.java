@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mbari.pythia.util.ResourceUtil.locateResource;
 
-public class Yolov5QueueServiceTest {
+public class Yolov5EventQueueTest {
 
     @Test
     public void testPredict() throws Exception {
@@ -33,7 +33,7 @@ public class Yolov5QueueServiceTest {
         // Locate model
         var modelPath = locateResource("/models/mbari-mb-benthic-33k.torchscript");
         var namesPath = locateResource("/models/mbari-mb-benthic-33k.names");
-        var service = new Yolov5QueueService(modelPath, namesPath);
+        var service = new Yolov5EventQueue(modelPath, namesPath);
         var imageFactory = ImageFactory.getInstance();
 
         // Process in service queye
