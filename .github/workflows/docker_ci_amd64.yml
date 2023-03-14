@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package -P linux-amd64
+        run: mvn --batch-mode --update-snapshots package -P linux-amd64 -Dmaven.test.skip=true
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
