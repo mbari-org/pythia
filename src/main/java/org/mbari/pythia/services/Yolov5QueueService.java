@@ -85,6 +85,7 @@ public class Yolov5QueueService {
                 }
             }
             catch (Exception e) {
+                log.log(System.Logger.Level.ERROR, "The event loop crashed", e);
                 ok = false;
             }
         };
