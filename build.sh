@@ -18,7 +18,7 @@ if [[ $ARCH == 'arm64' ]]; then
       -t mbari/annosaurus:latest \
       --push .
 else
-    "$SCRIPT_DIR/mvnw" package -P linux-intel &&
+    "$SCRIPT_DIR/mvnw" package -P linux-amd64 &&
     docker build --build-arg BUILD_DATE=$BUILD_DATE \
                  --build-arg VCS_REF=$VCS_REF \
                   -t mbari/pythia:${VCS_REF} \

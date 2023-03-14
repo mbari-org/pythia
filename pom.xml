@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mbari</groupId>
     <artifactId>pythia</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.2</version>
     <properties>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <djl.version>0.21.0</djl.version>
@@ -154,15 +154,9 @@
                 <quarkus.package.type>native</quarkus.package.type>
             </properties>
         </profile>
+        <!-- Native libraries will be downloaded as needed by djl. These profiles allow building for offline use -->
         <profile>
             <id>linux-amd64</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>linux</name>
-                    <arch>amd64</arch>
-                </os>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ai.djl.pytorch</groupId>
@@ -199,13 +193,6 @@
         </profile>
         <profile>
             <id>linux-aarch64</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>linux</name>
-                    <arch>aarch64</arch>
-                </os>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ai.djl.pytorch</groupId>
@@ -224,12 +211,6 @@
         </profile>
         <profile>
             <id>macos-amd64</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                    <arch>amd64</arch>
-                </os>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ai.djl.pytorch</groupId>
@@ -248,12 +229,6 @@
         </profile>
         <profile>
             <id>macos-aarch64</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                    <arch>aarch64</arch>
-                </os>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ai.djl.pytorch</groupId>

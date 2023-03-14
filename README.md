@@ -4,6 +4,34 @@ Pythia is a web service for generating predictions of what is seen in an image u
 
 Web UI is provided by [CVisionAI](https://www.cvisionai.com/)
 
+## Quick Start
+
+### Create torchscript model from pt model
+
+First, you will need a yolov5 model as torchscript. If you have a `.pt` file you can convert it to torchscript like so:
+
+```bash
+git clone https://github.com/ultralytics/yolov5  # clone
+cd yolov5
+pip install -r requirements.txt  # install
+
+python export.py --weights my-yolo-model.pt --include torchscript
+# This will create my-yolo-model.pt
+```
+
+### Start pythia
+
+To launch pythia, you will need the torchscript model and the names file that was use the pt model.
+
+```bash
+docker run -d \
+  --name=pythia \
+  --restart=always \
+  -p 8080:8080 \
+  -v /path/to/models/:/opt/models \
+  run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
+```
+
 ## Quick Start for development
 
 ```bash
