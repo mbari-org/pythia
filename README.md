@@ -21,7 +21,7 @@ The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from 
 
 ### Native libraries
 
-Pythia depends on native libraries. These are included via mavn profiles. When building for docker, be sure to disable your host platforms native libs. e.g. 
+Pythia depends on native libraries. These are included via maven profiles. When building for docker, be sure to disable your host platforms native libs. e.g. 
 
 ```bash
 mvn help:active-profiles -P linux-arm -P -macos-arm

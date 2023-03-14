@@ -155,7 +155,7 @@
             </properties>
         </profile>
         <profile>
-            <id>linux-intel</id>
+            <id>linux-amd64</id>
             <activation>
                 <os>
                     <family>unix</family>
@@ -180,7 +180,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>linux-intel-cuda</id>
+            <id>linux-amd64-cuda</id>
             <dependencies>
                 <dependency>
                     <groupId>ai.djl.pytorch</groupId>
@@ -198,7 +198,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>linux-arm</id>
+            <id>linux-aarch64</id>
             <activation>
                 <os>
                     <family>unix</family>
@@ -223,7 +223,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>macos-intel</id>
+            <id>macos-amd64</id>
             <activation>
                 <os>
                     <family>mac</family>
@@ -247,7 +247,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>macos-arm</id>
+            <id>macos-aarch64</id>
             <activation>
                 <os>
                     <family>mac</family>
