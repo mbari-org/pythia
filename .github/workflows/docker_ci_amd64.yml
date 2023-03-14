@@ -32,6 +32,4 @@ jobs:
           file: src/docker/Dockerfile.jvm
           platforms: linux/amd64
           push: true
-          tags:
-            - mbari/pythia:$(date +%s)
-            - mbari/pythia:latest
+          tags: mbari/pythia:$(date +%s),mbari/pythia:latest
