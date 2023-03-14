@@ -2,7 +2,7 @@
 
 Pythia is a web service for generating predictions of what is seen in an image using yolov5 and a custom model.
 
-Web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will be at `http://hostname:8080/q/swagger-ui`.
+Web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will be at `http://hostname:8080/q/swagger-ui`. Health checks at `http://hostname:8080/q/health`
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ python export.py --weights my-yolo-model.pt --include torchscript
 
 ### Start pythia
 
-To launch pythia, you will need the torchscript model and the names file that was use the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed.
+To launch pythia, you will need the torchscript model and the names file that was use the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. Also the web UI will only work if the app is running on port 8080.
 
 ```bash
 docker run -d \
