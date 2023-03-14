@@ -8,17 +8,18 @@ VCS_REF=`git tag | sort -V | tail -1`
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "Working directory is $SCRIPT_DIR"
 cd $SCRIPT_DIR
+"$SCRIPT_DIR/mvnw" package
 
 ARCH=$(uname -m)
 if [[ $ARCH == 'arm64' ]]; then
     # https://betterprogramming.pub/how-to-actually-deploy-docker-images-built-on-a-m1-macs-with-apple-silicon-a35e39318e97
     docker buildx build \
       --platform linux/amd64,linux/arm64 \
-      -t mbari/annosaurus:${VCS_REF} \
-      -t mbari/annosaurus:latest \
+      -t mbari/pythia:${VCS_REF} \
+      -t mbari/pythia:latest \
       --push .
 else
-    "$SCRIPT_DIR/mvnw" package -P linux-amd64 &&
+
     docker build --build-arg BUILD_DATE=$BUILD_DATE \
                  --build-arg VCS_REF=$VCS_REF \
                   -t mbari/pythia:${VCS_REF} \

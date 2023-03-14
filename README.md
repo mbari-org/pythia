@@ -2,7 +2,7 @@
 
 Pythia is a web service for generating predictions of what is seen in an image using yolov5 and a custom model.
 
-Web UI is provided by [CVisionAI](https://www.cvisionai.com/)
+Web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will be at `http://hostname:8080/q/swagger-ui`.
 
 ## Quick Start
 
@@ -50,7 +50,7 @@ The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from 
 
 ### Native libraries
 
-Pythia depends on native libraries. These are included via maven profiles. When building for docker, be sure to disable your host platforms native libs. e.g. 
+Pythia depends on native libraries. These platform specific libraries can be downloaded at runtime or they can be included at build time via maven profiles.  
 
 ```bash
 mvn help:active-profiles -P linux-arm -P -macos-arm
