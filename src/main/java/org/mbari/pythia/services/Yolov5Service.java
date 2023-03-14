@@ -4,13 +4,11 @@ package org.mbari.pythia.services;
 import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.inference.Predictor;
-import ai.djl.modality.Classifications;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.transform.Resize;
 import ai.djl.modality.cv.transform.ToTensor;
-import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.modality.cv.translator.YoloV5Translator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
@@ -49,7 +47,6 @@ public class Yolov5Service {
         Translator<Image, DetectedObjects> translator = YoloV5Translator
                 .builder()
                 .setPipeline(pipeline)
-                .optSynsetArtifactName("synset.txt")
                 .optSynset(names)
                 .build();
 
