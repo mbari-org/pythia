@@ -8,7 +8,7 @@ Web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will
 
 ### Create torchscript model from pt model
 
-First, [you will need to convert your yolov5 model](https://docs.djl.ai/docs/pytorch/how_to_convert_your_model_to_torchscript.html) to torchscript. If you have a `.pt` file you can convert it to torchscript like so:
+First, [convert your yolov5 model](https://docs.djl.ai/docs/pytorch/how_to_convert_your_model_to_torchscript.html) to torchscript. If you have a `.pt` file you can convert it to torchscript like so:
 
 ```bash
 git clone https://github.com/ultralytics/yolov5  # clone

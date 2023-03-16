@@ -273,7 +273,7 @@ class ModelServerFrontEnd {
       var myHeaders = new Headers();
       myHeaders.append("Accept", "*/*");
       myHeaders.append("Connection", "keep-alive");
-      myHeaders.append("Host", "http://localhost:8080/");
+      // myHeaders.append("Host", "http://localhost:8080/");
       /* NOTE: Do NOT send content-type */ // myHeaders.append("Content-Type", 'multipart/form-data;boundary=""');
 
       var formdata = new FormData();
@@ -294,9 +294,9 @@ class ModelServerFrontEnd {
          redirect: 'follow'
       };
 
-      var url = new URL("http://localhost:8080/predictor/")
+      // var url = new URL("/predictor/")
       this._successEl.innerHTML = "Loading....";
-      fetch(url, requestOptions)
+      fetch("/predictor/", requestOptions)
          .then(response => response.json())
          .then(data => {
             console.log(data);
