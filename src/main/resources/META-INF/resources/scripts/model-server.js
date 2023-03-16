@@ -291,7 +291,8 @@ class ModelServerFrontEnd {
          method: 'POST',
          headers: myHeaders,
          body: formdata,
-         redirect: 'follow'
+         redirect: 'follow',
+         mode: 'cors'
       };
 
       // var url = new URL("/predictor/")
