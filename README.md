@@ -15,7 +15,7 @@ git clone https://github.com/ultralytics/yolov5  # clone
 cd yolov5
 pip install -r requirements.txt  # install
 
-python export.py --weights my-yolo-model.pt --include torchscript
+python export.py --agnostic-nms --weights my-yolo-model.pt --include torchscript
 # This will create my-yolo-model.pt
 ```
 
