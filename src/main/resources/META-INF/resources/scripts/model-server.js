@@ -273,6 +273,7 @@ class ModelServerFrontEnd {
       var myHeaders = new Headers();
       myHeaders.append("Accept", "*/*");
       myHeaders.append("Connection", "keep-alive");
+      myHeaders.append("Access-Control-Request-Private-Network", "true");
       // myHeaders.append("Host", "http://localhost:8080/");
       /* NOTE: Do NOT send content-type */ // myHeaders.append("Content-Type", 'multipart/form-data;boundary=""');
 
