@@ -25,12 +25,12 @@ To launch pythia, you will need the torchscript model and the names file that wa
 
 ```bash
 docker run -d \
---name=pythia \
---restart=always \
--p 8080:8080 \
--v /path/to/models/:/opt/models \
-mbari/pythia \
-run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
+    --name=pythia \
+    --restart=always \
+    -p 8080:8080 \
+    -v /path/to/models/:/opt/models \
+    mbari/pythia \
+    run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
 ```
 
 ## Quick Start for development
@@ -41,9 +41,9 @@ quarkus dev -Dquarkus.args="src/test/resources/models/mbari-mb-benthic-33k.torch
 
 # Send a request
 curl -X POST 'http://localhost:8080/predict/' \
--H "accept: application/json" \
--H "Content-Type: multipart/form-data" \
--F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
+    -H "accept: application/json" \
+    -H "Content-Type: multipart/form-data" \
+    -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
 ```
 
 The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://github.com/fathomnet/models).
