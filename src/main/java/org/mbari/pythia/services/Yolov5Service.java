@@ -1,5 +1,19 @@
+/*
+ * Copyright 2023 Monterey Bay Aquarium Research Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.mbari.pythia.services;
-
 
 import ai.djl.Application;
 import ai.djl.ModelException;
@@ -15,14 +29,14 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
-import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.util.NamesUtil;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import org.mbari.pythia.domain.BoundingBox;
+import org.mbari.pythia.util.NamesUtil;
 
-// /Users/brian/workspace/M3/03_00_51_14.jpg /Users/brian/Documents/M3/models/mbari315k.torchscript /Users/brian/Documents/M3/models/mbari315k.names
+// /Users/brian/workspace/M3/03_00_51_14.jpg /Users/brian/Documents/M3/models/mbari315k.torchscript
+// /Users/brian/Documents/M3/models/mbari315k.names
 public class Yolov5Service {
 
     private final Criteria<Image, DetectedObjects> criteria;
@@ -44,8 +58,7 @@ public class Yolov5Service {
         pipeline.add(new Resize(640)); // required for yolov5? Doesn't work without it
         pipeline.add(new ToTensor());
 
-        Translator<Image, DetectedObjects> translator = YoloV5Translator
-                .builder()
+        Translator<Image, DetectedObjects> translator = YoloV5Translator.builder()
                 .setPipeline(pipeline)
                 .optSynset(names)
                 .build();
@@ -62,7 +75,6 @@ public class Yolov5Service {
     public List<BoundingBox> predict(Path imageFile) throws IOException, ModelException, TranslateException {
         Image img = ImageFactory.getInstance().fromFile(imageFile);
 
-
         try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
             try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                 // detections are scaled to 640 * 640 image. We have to scale the boxes back to image coords
@@ -71,5 +83,4 @@ public class Yolov5Service {
             }
         }
     }
-
 }

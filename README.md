@@ -25,12 +25,12 @@ To launch pythia, you will need the torchscript model and the names file that wa
 
 ```bash
 docker run -d \
-  --name=pythia \
-  --restart=always \
-  -p 8080:8080 \
-  -v /path/to/models/:/opt/models \
-  mbari/pythia \
-  run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
+--name=pythia \
+--restart=always \
+-p 8080:8080 \
+-v /path/to/models/:/opt/models \
+mbari/pythia \
+run /opt/models/my-yolo-model.torchscript  /opt/models/my-yolo-model.names
 ```
 
 ## Quick Start for development
@@ -41,23 +41,23 @@ quarkus dev -Dquarkus.args="src/test/resources/models/mbari-mb-benthic-33k.torch
 
 # Send a request
 curl -X POST 'http://localhost:8080/predict/' \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
+-H "accept: application/json" \
+-H "Content-Type: multipart/form-data" \
+-F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
 ```
 
 The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://github.com/fathomnet/models).
 
 ### Native libraries
 
-Pythia depends on native libraries. These platform specific libraries can be downloaded at runtime or they can be included at build time via maven profiles.  
+Pythia depends on native libraries. These platform specific libraries can be downloaded at runtime or they can be included at build time via maven profiles.
 
 ```bash
 mvn help:active-profiles -P linux-arm -P -macos-arm
 
 The following profiles are active:
 
- - linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
+- linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
 ```
 
 vs.
@@ -67,8 +67,8 @@ mvn help:active-profiles -P linux-arm
 
 The following profiles are active:
 
- - linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
- - macos-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)```
+- linux-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)
+- macos-arm (source: org.mbari:pythia:1.0.0-SNAPSHOT)```
 
 ## Quarkus Stuff
 
@@ -105,12 +105,12 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 
 ## Creating a native executable
 
-You can create a native executable using: 
+You can create a native executable using:
 ```shell script
 ./mvnw package -Pnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
 ```shell script
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```

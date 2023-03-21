@@ -1,18 +1,31 @@
+/*
+ * Copyright 2023 Monterey Bay Aquarium Research Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.mbari.pythia.services;
-
 
 import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.ZooModel;
-import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.domain.PredictResults;
-import org.mbari.pythia.util.TimeUtil;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.*;
+import org.mbari.pythia.domain.BoundingBox;
+import org.mbari.pythia.domain.PredictResults;
+import org.mbari.pythia.util.TimeUtil;
 
 // TODO look at EventLoop implementation in vert.x book to see if it's more useful
 public class Yolov5EventQueue {
@@ -30,7 +43,6 @@ public class Yolov5EventQueue {
     private final BlockingQueue<Submission> queue = new LinkedBlockingQueue<>(100);
     private Thread thread;
     private volatile boolean ok = false;
-
 
     public Yolov5EventQueue(Path modelPath, Path namesPath) {
         this.modelPath = modelPath;
@@ -83,9 +95,8 @@ public class Yolov5EventQueue {
                             }
                             if (submission != null) {
                                 var detectedObjects = predictor.predict(submission.image);
-                                var boundingBoxes = BoundingBox.fromYolov5DetectedObjects(submission.image.getWidth(),
-                                        submission.image.getHeight(),
-                                        detectedObjects);
+                                var boundingBoxes = BoundingBox.fromYolov5DetectedObjects(
+                                        submission.image.getWidth(), submission.image.getHeight(), detectedObjects);
                                 var predictionResults = new PredictResults(submission.image, boundingBoxes);
                                 submission.future.complete(predictionResults);
                             }
@@ -101,9 +112,5 @@ public class Yolov5EventQueue {
             thread.setDaemon(true);
             thread.start();
         }
-
     }
-
-
-
 }
