@@ -21,7 +21,7 @@ python export.py --agnostic-nms --weights my-yolo-model.pt --include torchscript
 
 ### Start pythia
 
-To launch pythia, you will need the torchscript model and the names file that was use the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. Also the web UI will only work if the app is running on port 8080.
+To launch pythia, you will need the torchscript model and the names file that was use the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. 
 
 ```bash
 docker run -d \
