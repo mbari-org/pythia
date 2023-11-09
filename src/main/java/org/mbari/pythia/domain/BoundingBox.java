@@ -19,11 +19,22 @@ import ai.djl.modality.cv.output.DetectedObjects;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Constructor. Represents a rectangular ROI
+ * @param concept The class name
+ * @param x origin, 0 is left
+ * @param y origin, 0 is top
+ * @param width width in pixels
+ * @param height height in pixels
+ * @param probability aka confidence. We're using probability as that's what DJL uses internally
+ */
 public record BoundingBox(String concept, double x, double y, double width, double height, double probability) {
 
     /**
      * Detection output from teh yolov5 detector are done on a
-     * 640x640 image and have to be scaled back up.
+     * 640x640 image and have to be scaled back up. Note this is hardcoded.
+     *
+     * TODO: remove hard-coded 640 in the future as we may use higher resolutions (e.g. 1280)
      * @param concept
      * @param imageWidth
      * @param imageHeight

@@ -16,17 +16,22 @@
 package org.mbari.pythia;
 
 import java.nio.file.Path;
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.Produces;
 import org.mbari.pythia.services.Yolov5EventQueue;
 import picocli.CommandLine;
 
+/**
+ * Through the magic of EE annotations this wires up the event queue based on caommand-line
+ * arguments. You'll never see this class explicitly called anywhere, but whenever a
+ * Yolov5EventQueue is injected, this class is used to produce it as a singleton.
+ */
 @ApplicationScoped
-public class Yolov5Configuration {
+public class Yolov5EventQueueProvider {
 
     @Produces
     @ApplicationScoped
-    Yolov5EventQueue volov5Service(CommandLine.ParseResult parseResult) {
+    Yolov5EventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
         Path modelPath = parseResult.matchedPositional(0).getValue();
         Path namesPath = parseResult.matchedPositional(1).getValue();
         var service = new Yolov5EventQueue(modelPath, namesPath);

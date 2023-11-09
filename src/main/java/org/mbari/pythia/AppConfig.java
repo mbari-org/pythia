@@ -15,6 +15,9 @@
  */
 package org.mbari.pythia;
 
+/**
+ * Application global variables and configuration
+ */
 public class AppConfig {
 
     public static final String NAME = "pythia";

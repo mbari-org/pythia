@@ -27,7 +27,12 @@ import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictResults;
 import org.mbari.pythia.util.TimeUtil;
 
-// TODO look at EventLoop implementation in vert.x book to see if it's more useful
+/**
+ * DJL can do multi-threading, but it depends on the underlying engine.
+ * Here, we hedge our bets and just do the prediction in a single thread,
+ * reusing the predictor to allow for optimizations.
+ * More details at <a href="http://docs.djl.ai/docs/development/inference_performance_optimization.html">...</a>
+ */
 public class Yolov5EventQueue {
 
     private System.Logger log = System.getLogger(getClass().getName());

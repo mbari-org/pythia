@@ -19,6 +19,11 @@ import io.quarkus.runtime.Quarkus;
 import java.nio.file.Path;
 import picocli.CommandLine;
 
+/**
+ * This is the command line parser. On start up it captures the paths to the
+ * model and the names file. These are later used by the Yolov5EventQueueProvider
+ * to initialize the event queue.
+ */
 @CommandLine.Command
 public class MainCommand implements Runnable {
 

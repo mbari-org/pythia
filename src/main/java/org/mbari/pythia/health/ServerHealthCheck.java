@@ -15,12 +15,18 @@
  */
 package org.mbari.pythia.health;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Liveness;
 import org.mbari.pythia.AppConfig;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+/**
+ * Health check at ROOT/q/health. We report some info about the server
+ */
 @Liveness
 @ApplicationScoped
 public class ServerHealthCheck implements HealthCheck {
@@ -28,7 +34,7 @@ public class ServerHealthCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
         var runtime = Runtime.getRuntime();
-        return HealthCheckResponse.named("Server status")
+        var response =  HealthCheckResponse.named("Server status")
                 .up()
                 .withData("jdkVersion", Runtime.version().toString())
                 .withData("availableProcessors", runtime.availableProcessors())
@@ -37,8 +43,15 @@ public class ServerHealthCheck implements HealthCheck {
                 .withData("totalMemory", runtime.totalMemory())
                 .withData("application", AppConfig.NAME)
                 .withData("version", AppConfig.VERSION)
-                .withData("description", AppConfig.DESCRIPTION)
-                .build();
+                .withData("description", AppConfig.DESCRIPTION);
+        try {
+            var hostname = InetAddress.getLocalHost().getHostName();
+            response.withData("hostname", hostname);
+        }
+        catch (UnknownHostException e) {
+            // nothing to do
+        }
+        return response.build();
     }
 }
 

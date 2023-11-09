@@ -15,13 +15,17 @@
  */
 package org.mbari.pythia.health;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Readiness;
 import org.mbari.pythia.services.Yolov5EventQueue;
 
+/**
+ * Health check at ROOT/q/health. We report the number of images in the event queue waiting
+ * to be processed.
+ */
 @Readiness
 @ApplicationScoped
 public class Yolov5EventQueueHealthCheck implements HealthCheck {

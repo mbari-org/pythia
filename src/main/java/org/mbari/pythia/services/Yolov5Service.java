@@ -35,8 +35,11 @@ import java.util.List;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.util.NamesUtil;
 
-// /Users/brian/workspace/M3/03_00_51_14.jpg /Users/brian/Documents/M3/models/mbari315k.torchscript
-// /Users/brian/Documents/M3/models/mbari315k.names
+/**
+ * This service builds the criteria used to load a model. It can also run one-off predictions
+ * using the `predict` method, but for production, use the Yolov5EventQueue for
+ * predictions as it will give much better performance.
+ */
 public class Yolov5Service {
 
     private final Criteria<Image, DetectedObjects> criteria;
@@ -50,6 +53,12 @@ public class Yolov5Service {
         this.criteria = buildCriteria(modelPath, namesPath);
     }
 
+    /**
+     * Method to assemble a criteria used to build a model.
+     * @param modelPath The path to the torchscript file
+     * @param namesPath The path to the names file
+     * @return Criteria that can be used to obtain a predictor
+     */
     public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath) {
 
         var names = NamesUtil.load(namesPath);

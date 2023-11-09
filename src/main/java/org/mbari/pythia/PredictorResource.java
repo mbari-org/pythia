@@ -16,11 +16,11 @@
 package org.mbari.pythia;
 
 import java.util.concurrent.CompletionStage;
-import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.context.ThreadContext;
 import org.jboss.resteasy.reactive.RestForm;
@@ -28,6 +28,10 @@ import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.mbari.pythia.domain.PredictorResults;
 import org.mbari.pythia.services.Yolov5EventQueue;
 
+/**
+ * Endpoints for running a prediction on an image. The output is compatible with CVisionAI's
+ * endpoints.
+ */
 @Path("/predictor")
 public class PredictorResource {
 
