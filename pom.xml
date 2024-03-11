@@ -6,21 +6,21 @@
   <artifactId>pythia</artifactId>
   <version>0.0.8</version>
   <properties>
-    <compiler-plugin.version>3.10.1</compiler-plugin.version>
-    <djl.version>0.24.0</djl.version>
+    <compiler-plugin.version>3.12.1</compiler-plugin.version>
+    <djl.version>0.26.0</djl.version>
     <maven.compiler.release>17</maven.compiler.release>
     <palantirJavaFormat.version>2.28.0</palantirJavaFormat.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <pytorch.jni.version>2.0.1-0.24.0</pytorch.jni.version>
-    <pytorch.native.version>2.0.1</pytorch.native.version>
-    <pytorch.version>2.0.1</pytorch.version>
+    <pytorch.jni.version>2.1.1-0.26.0</pytorch.jni.version>
+    <pytorch.native.version>2.1.1</pytorch.native.version>
+    <pytorch.version>2.1.1</pytorch.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.6.6</quarkus.platform.version>
+    <quarkus.platform.version>3.8.2</quarkus.platform.version>
     <spotless.version>2.35.0</spotless.version>
     <skipITs>true</skipITs>
-    <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+    <surefire-plugin.version>3.2.3</surefire-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
