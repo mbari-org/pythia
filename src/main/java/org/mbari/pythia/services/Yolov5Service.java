@@ -43,6 +43,7 @@ import org.mbari.pythia.util.NamesUtil;
 public class Yolov5Service {
 
     private final Criteria<Image, DetectedObjects> criteria;
+    private final int resolution;
 
     /**
      *
@@ -50,6 +51,7 @@ public class Yolov5Service {
      * @param namesPath The path the names files. Names used to train model
      */
     public Yolov5Service(Path modelPath, Path namesPath, int resolution) {
+        this.resolution = resolution;
         this.criteria = buildCriteria(modelPath, namesPath, resolution);
     }
 
@@ -88,7 +90,7 @@ public class Yolov5Service {
             try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                 // detections are scaled to 640 * 640 image. We have to scale the boxes back to image coords
                 DetectedObjects detection = predictor.predict(img);
-                return BoundingBox.fromYolov5DetectedObjects(img.getWidth(), img.getHeight(), detection);
+                return BoundingBox.fromYolov5DetectedObjects(img.getWidth(), img.getHeight(), detection, resolution);
             }
         }
     }

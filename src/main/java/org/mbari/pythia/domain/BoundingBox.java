@@ -43,6 +43,7 @@ public record BoundingBox(String concept, double x, double y, double width, doub
      * @param detectionWidth
      * @param detectionHeight
      * @param probability
+     * @param imgsz The scale the model wwas trained at (e.g. 640 or 1280)
      * @return
      */
     public static BoundingBox fromYolov5(
@@ -53,9 +54,10 @@ public record BoundingBox(String concept, double x, double y, double width, doub
             double detectionY,
             double detectionWidth,
             double detectionHeight,
-            double probability) {
-        var xScale = imageWidth / 640D;
-        var yScale = imageHeight / 640D;
+            double probability,
+            double imgsz) {
+        var xScale = imageWidth / imgsz;
+        var yScale = imageHeight / imgsz;
         return new BoundingBox(
                 concept,
                 detectionX * xScale,
@@ -73,7 +75,7 @@ public record BoundingBox(String concept, double x, double y, double width, doub
      * @return boxes that are scaled apporopriately to the original source image
      */
     public static List<BoundingBox> fromYolov5DetectedObjects(
-            int imageWidth, int imageHeight, DetectedObjects detectedObjects) {
+            int imageWidth, int imageHeight, DetectedObjects detectedObjects, int imgsz) {
         int n = detectedObjects.getNumberOfObjects();
         List<BoundingBox> boxes = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
@@ -88,7 +90,8 @@ public record BoundingBox(String concept, double x, double y, double width, doub
                     rect.getY(),
                     rect.getWidth(),
                     rect.getHeight(),
-                    obj.getProbability());
+                    obj.getProbability(),
+                    imgsz);
             boxes.add(boundingBox);
         }
         return boxes;
