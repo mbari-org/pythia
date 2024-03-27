@@ -47,7 +47,7 @@ public class Yolov5EventQueueTest {
         // Locate model
         var modelPath = locateResource("/models/mbari-mb-benthic-33k.torchscript");
         var namesPath = locateResource("/models/mbari-mb-benthic-33k.names");
-        var service = new Yolov5EventQueue(modelPath, namesPath);
+        var service = new Yolov5EventQueue(modelPath, namesPath, 640);
         var imageFactory = ImageFactory.getInstance();
 
         // Process in service queye

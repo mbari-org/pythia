@@ -49,8 +49,8 @@ public class Yolov5Service {
      * @param modelPath The path to a torchscript file. You can use yolov5 to convert a pt file to torchscript
      * @param namesPath The path the names files. Names used to train model
      */
-    public Yolov5Service(Path modelPath, Path namesPath) {
-        this.criteria = buildCriteria(modelPath, namesPath);
+    public Yolov5Service(Path modelPath, Path namesPath, int resolution) {
+        this.criteria = buildCriteria(modelPath, namesPath, resolution);
     }
 
     /**
@@ -59,12 +59,12 @@ public class Yolov5Service {
      * @param namesPath The path to the names file
      * @return Criteria that can be used to obtain a predictor
      */
-    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath) {
+    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution) {
 
         var names = NamesUtil.load(namesPath);
 
         Pipeline pipeline = new Pipeline();
-        pipeline.add(new Resize(640)); // required for yolov5? Doesn't work without it
+        pipeline.add(new Resize(resolution)); // required for yolov5? Doesn't work without it
         pipeline.add(new ToTensor());
 
         Translator<Image, DetectedObjects> translator = YoloV5Translator.builder()

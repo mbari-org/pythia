@@ -18,6 +18,8 @@ package org.mbari.pythia;
 import java.nio.file.Path;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Produces;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.mbari.pythia.services.Yolov5EventQueue;
 import picocli.CommandLine;
 
@@ -29,12 +31,15 @@ import picocli.CommandLine;
 @ApplicationScoped
 public class Yolov5EventQueueProvider {
 
+    @ConfigProperty(name = "yolov5.resolution")
+    Integer resolution;
+
     @Produces
     @ApplicationScoped
     Yolov5EventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
         Path modelPath = parseResult.matchedPositional(0).getValue();
         Path namesPath = parseResult.matchedPositional(1).getValue();
-        var service = new Yolov5EventQueue(modelPath, namesPath);
+        var service = new Yolov5EventQueue(modelPath, namesPath, resolution);
         service.run(); // start the event queue
         return service;
     }
