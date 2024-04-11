@@ -24,6 +24,7 @@ import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.transform.Resize;
 import ai.djl.modality.cv.transform.ToTensor;
 import ai.djl.modality.cv.translator.YoloV5Translator;
+import ai.djl.modality.cv.translator.YoloV8Translator;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.Pipeline;
@@ -49,10 +50,22 @@ public class Yolov5Service {
      *
      * @param modelPath The path to a torchscript file. You can use yolov5 to convert a pt file to torchscript
      * @param namesPath The path the names files. Names used to train model
+     * @param resolution The resolution to scale the image to before running the model
      */
     public Yolov5Service(Path modelPath, Path namesPath, int resolution) {
+        this(modelPath, namesPath, resolution, 5);
+    }
+
+    /**
+     * Constructor to build a Yolov5Service
+     * @param modelPath The path to a torchscript file. You can use yolov5 to convert a pt file to torchscript
+     * @param namesPath The path the names files. Names used to train model
+     * @param resolution The resolution to scale the image to before running the model
+     * @param yoloVersion The version of the Yolov5 model to use. 5 or 8
+     */
+    public Yolov5Service(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
         this.resolution = resolution;
-        this.criteria = buildCriteria(modelPath, namesPath, resolution);
+        this.criteria = buildCriteria(modelPath, namesPath, resolution, yoloVersion);
     }
 
     /**
@@ -61,7 +74,7 @@ public class Yolov5Service {
      * @param namesPath The path to the names file
      * @return Criteria that can be used to obtain a predictor
      */
-    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution) {
+    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
 
         var names = NamesUtil.load(namesPath);
 
@@ -69,10 +82,20 @@ public class Yolov5Service {
         pipeline.add(new Resize(resolution)); // required for yolov5? Doesn't work without it
         pipeline.add(new ToTensor());
 
-        Translator<Image, DetectedObjects> translator = YoloV5Translator.builder()
-                .setPipeline(pipeline)
-                .optSynset(names)
-                .build();
+        Translator<Image, DetectedObjects> translator;
+        if (yoloVersion == 8) {
+            translator = YoloV8Translator.builder()
+                    .setPipeline(pipeline)
+                    .optSynset(names)
+                    .build();
+        }
+        else {
+            translator = YoloV5Translator.builder()
+                    .setPipeline(pipeline)
+                    .optSynset(names)
+                    .build();
+        }
+
 
         return Criteria.builder()
                 .optApplication(Application.CV.OBJECT_DETECTION)

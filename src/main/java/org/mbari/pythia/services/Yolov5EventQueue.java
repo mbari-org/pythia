@@ -46,15 +46,17 @@ public class Yolov5EventQueue {
     public final Path modelPath;
     public final Path namesPath;
     private final int resolution;
+    private final int yoloVersion;
     private final BlockingQueue<Submission> queue = new LinkedBlockingQueue<>(100);
     private Thread thread;
     private volatile boolean ok = false;
 
 
-    public Yolov5EventQueue(Path modelPath, Path namesPath, int resolution) {
+    public Yolov5EventQueue(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
         this.modelPath = modelPath;
         this.namesPath = namesPath;
         this.resolution = resolution;
+        this.yoloVersion = yoloVersion;
     }
 
     public CompletableFuture<PredictResults> predict(Path imagePath) {
@@ -92,7 +94,7 @@ public class Yolov5EventQueue {
             Runnable runnable = () -> {
                 log.log(System.Logger.Level.INFO, "Starting predictor thread using model at " + modelPath);
                 ok = true;
-                var criteria = Yolov5Service.buildCriteria(modelPath, namesPath, resolution);
+                var criteria = Yolov5Service.buildCriteria(modelPath, namesPath, resolution, yoloVersion);
                 try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
                     try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                         Submission submission = null;

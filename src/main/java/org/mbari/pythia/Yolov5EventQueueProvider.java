@@ -34,12 +34,15 @@ public class Yolov5EventQueueProvider {
     @ConfigProperty(name = "yolov5.resolution")
     Integer resolution;
 
+    @ConfigProperty(name = "yolo.version")
+    Integer yoloVersion;
+
     @Produces
     @ApplicationScoped
     Yolov5EventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
         Path modelPath = parseResult.matchedPositional(0).getValue();
         Path namesPath = parseResult.matchedPositional(1).getValue();
-        var service = new Yolov5EventQueue(modelPath, namesPath, resolution);
+        var service = new Yolov5EventQueue(modelPath, namesPath, resolution, yoloVersion);
         service.run(); // start the event queue
         return service;
     }
