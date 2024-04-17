@@ -33,7 +33,7 @@ import org.mbari.pythia.util.TimeUtil;
  * reusing the predictor to allow for optimizations.
  * More details at <a href="http://docs.djl.ai/docs/development/inference_performance_optimization.html">...</a>
  */
-public class Yolov5EventQueue {
+public class YoloEventQueue {
 
     private System.Logger log = System.getLogger(getClass().getName());
 
@@ -52,7 +52,7 @@ public class Yolov5EventQueue {
     private volatile boolean ok = false;
 
 
-    public Yolov5EventQueue(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
+    public YoloEventQueue(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
         this.modelPath = modelPath;
         this.namesPath = namesPath;
         this.resolution = resolution;
@@ -94,7 +94,7 @@ public class Yolov5EventQueue {
             Runnable runnable = () -> {
                 log.log(System.Logger.Level.INFO, "Starting predictor thread using model at " + modelPath);
                 ok = true;
-                var criteria = Yolov5Service.buildCriteria(modelPath, namesPath, resolution, yoloVersion);
+                var criteria = YoloService.buildCriteria(modelPath, namesPath, resolution, yoloVersion);
                 try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
                     try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                         Submission submission = null;

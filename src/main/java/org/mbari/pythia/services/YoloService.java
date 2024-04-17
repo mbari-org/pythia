@@ -38,10 +38,12 @@ import org.mbari.pythia.util.NamesUtil;
 
 /**
  * This service builds the criteria used to load a model. It can also run one-off predictions
- * using the `predict` method, but for production, use the Yolov5EventQueue for
+ * using the `predict` method, but for production, use the YoloEventQueue for
  * predictions as it will give much better performance.
  */
-public class Yolov5Service {
+public class YoloService {
+
+    private static final System.Logger log = System.getLogger(YoloService.class.getName());
 
     private final Criteria<Image, DetectedObjects> criteria;
     private final int resolution;
@@ -52,18 +54,18 @@ public class Yolov5Service {
      * @param namesPath The path the names files. Names used to train model
      * @param resolution The resolution to scale the image to before running the model
      */
-    public Yolov5Service(Path modelPath, Path namesPath, int resolution) {
+    public YoloService(Path modelPath, Path namesPath, int resolution) {
         this(modelPath, namesPath, resolution, 5);
     }
 
     /**
-     * Constructor to build a Yolov5Service
+     * Constructor to build a YoloService
      * @param modelPath The path to a torchscript file. You can use yolov5 to convert a pt file to torchscript
      * @param namesPath The path the names files. Names used to train model
      * @param resolution The resolution to scale the image to before running the model
      * @param yoloVersion The version of the Yolov5 model to use. 5 or 8
      */
-    public Yolov5Service(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
+    public YoloService(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
         this.resolution = resolution;
         this.criteria = buildCriteria(modelPath, namesPath, resolution, yoloVersion);
     }
@@ -76,6 +78,9 @@ public class Yolov5Service {
      */
     public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
 
+        log.log(System.Logger.Level.INFO, 
+            "Building yolov{0} criteria for model: {1}", yoloVersion, modelPath);
+
         var names = NamesUtil.load(namesPath);
 
         Pipeline pipeline = new Pipeline();
@@ -84,6 +89,7 @@ public class Yolov5Service {
 
         Translator<Image, DetectedObjects> translator;
         if (yoloVersion == 8) {
+            System.out.println("Using Yolov8");
             translator = YoloV8Translator.builder()
                     .setPipeline(pipeline)
                     .optSynset(names)

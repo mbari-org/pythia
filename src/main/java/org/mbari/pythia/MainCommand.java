@@ -21,7 +21,7 @@ import picocli.CommandLine;
 
 /**
  * This is the command line parser. On start up it captures the paths to the
- * model and the names file. These are later used by the Yolov5EventQueueProvider
+ * model and the names file. These are later used by the YoloEventQueueProvider
  * to initialize the event queue.
  */
 @CommandLine.Command

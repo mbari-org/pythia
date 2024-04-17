@@ -28,7 +28,7 @@ import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.mbari.pythia.domain.BoundingBox;
 import org.mbari.pythia.domain.PredictResults;
-import org.mbari.pythia.services.Yolov5EventQueue;
+import org.mbari.pythia.services.YoloEventQueue;
 
 /**
  * Endpoints for running a prediction on an image. Returns easy to understand bounding boxes of
@@ -38,7 +38,7 @@ import org.mbari.pythia.services.Yolov5EventQueue;
 public class PredictResource {
 
     @Inject
-    Yolov5EventQueue yolov5;
+    YoloEventQueue yolov5;
 
     // https://quarkus.io/guides/context-propagation
     @Inject

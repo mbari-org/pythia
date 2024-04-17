@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Readiness;
-import org.mbari.pythia.services.Yolov5EventQueue;
+import org.mbari.pythia.services.YoloEventQueue;
 
 /**
  * Health check at ROOT/q/health. We report the number of images in the event queue waiting
@@ -28,23 +28,23 @@ import org.mbari.pythia.services.Yolov5EventQueue;
  */
 @Readiness
 @ApplicationScoped
-public class Yolov5EventQueueHealthCheck implements HealthCheck {
+public class YoloEventQueueHealthCheck implements HealthCheck {
 
-    Yolov5EventQueue yolov5EventQueue;
+    YoloEventQueue yoloEventQueue;
 
     private static final String RESPONSE = "Yolov5 event queue";
 
     @Inject
-    public Yolov5EventQueueHealthCheck(Yolov5EventQueue yolov5EventQueue) {
-        this.yolov5EventQueue = yolov5EventQueue;
+    public YoloEventQueueHealthCheck(YoloEventQueue yoloEventQueue) {
+        this.yoloEventQueue = yoloEventQueue;
     }
 
     @Override
     public HealthCheckResponse call() {
-        if (yolov5EventQueue.isOk()) {
+        if (yoloEventQueue.isOk()) {
             return HealthCheckResponse.named(RESPONSE)
                     .up()
-                    .withData("pendingCount", yolov5EventQueue.pendingCount())
+                    .withData("pendingCount", yoloEventQueue.pendingCount())
                     .build();
 
         } else {

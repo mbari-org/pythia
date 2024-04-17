@@ -32,7 +32,7 @@ public class Yolov5ServiceTest {
         // Locate model
         var modelPath = locateResource("/models/mbari-mb-benthic-33k.torchscript");
         var namesPath = locateResource("/models/mbari-mb-benthic-33k.names");
-        var service = new Yolov5Service(modelPath, namesPath, 640);
+        var service = new YoloService(modelPath, namesPath, 640, 5);
         var boxes = service.predict(imagePath);
         assertTrue(!boxes.isEmpty());
         System.out.println(boxes);

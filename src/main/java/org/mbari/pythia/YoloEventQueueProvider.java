@@ -20,16 +20,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Produces;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.mbari.pythia.services.Yolov5EventQueue;
+import org.mbari.pythia.services.YoloEventQueue;
 import picocli.CommandLine;
 
 /**
  * Through the magic of EE annotations this wires up the event queue based on caommand-line
  * arguments. You'll never see this class explicitly called anywhere, but whenever a
- * Yolov5EventQueue is injected, this class is used to produce it as a singleton.
+ * YoloEventQueue is injected, this class is used to produce it as a singleton.
  */
 @ApplicationScoped
-public class Yolov5EventQueueProvider {
+public class YoloEventQueueProvider {
 
     @ConfigProperty(name = "yolov5.resolution")
     Integer resolution;
@@ -39,10 +39,10 @@ public class Yolov5EventQueueProvider {
 
     @Produces
     @ApplicationScoped
-    Yolov5EventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
+    YoloEventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
         Path modelPath = parseResult.matchedPositional(0).getValue();
         Path namesPath = parseResult.matchedPositional(1).getValue();
-        var service = new Yolov5EventQueue(modelPath, namesPath, resolution, yoloVersion);
+        var service = new YoloEventQueue(modelPath, namesPath, resolution, yoloVersion);
         service.run(); // start the event queue
         return service;
     }

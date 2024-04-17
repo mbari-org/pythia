@@ -26,7 +26,7 @@ import org.eclipse.microprofile.context.ThreadContext;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.mbari.pythia.domain.PredictorResults;
-import org.mbari.pythia.services.Yolov5EventQueue;
+import org.mbari.pythia.services.YoloEventQueue;
 
 /**
  * Endpoints for running a prediction on an image. The output is compatible with CVisionAI's
@@ -36,7 +36,7 @@ import org.mbari.pythia.services.Yolov5EventQueue;
 public class PredictorResource {
 
     @Inject
-    Yolov5EventQueue yolov5;
+    YoloEventQueue yolov5;
 
     // https://quarkus.io/guides/context-propagation
     @Inject

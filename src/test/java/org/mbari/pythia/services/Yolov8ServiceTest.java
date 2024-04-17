@@ -17,7 +17,7 @@ public class Yolov8ServiceTest {
         // Locate model
         var modelPath = locateResource("/models/mbari401k_yolov8.torchscript");
         var namesPath = locateResource("/models/mbari401k_yolov8.names");
-        var service = new Yolov5Service(modelPath, namesPath, 640, 8);
+        var service = new YoloService(modelPath, namesPath, 640, 8);
         var boxes = service.predict(imagePath);
         assertTrue(!boxes.isEmpty());
         System.out.println(boxes);
