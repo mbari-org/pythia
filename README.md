@@ -1,27 +1,26 @@
 # pythia
 
-Pythia is a web service for generating predictions of what is seen in an image using yolov5 and a custom model.
+Pythia is a web service for generating predictions of what is seen in an image using yolo and a custom model. It provides a simple web UI and a REST API for making predictions. The web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will be at `http://hostname:8080/q/swagger-ui`. Health checks at `http://hostname:8080/q/health`
 
-Web UI is provided by [CVisionAI](https://www.cvisionai.com/). Swagger docs will be at `http://hostname:8080/q/swagger-ui`. Health checks at `http://hostname:8080/q/health`
+![Screenshot](src/site/assets/images/Pythia.png)
+
 
 ## Quick Start
 
-### Create torchscript model from pt model
+### Create a torchscript model from pt model
 
-First, [convert your yolov5 model](https://docs.djl.ai/docs/pytorch/how_to_convert_your_model_to_torchscript.html) to torchscript. If you have a `.pt` file you can convert it to torchscript like so:
+First, [convert your yolov5/v8 model](https://docs.djl.ai/docs/pytorch/how_to_convert_your_model_to_torchscript.html) to torchscript. If you have a `.pt` file you can convert it to torchscript using [ultralytics](https://docs.ultralytics.com/quickstart/):
 
 ```bash
-git clone https://github.com/ultralytics/yolov5  # clone
-cd yolov5
-pip install -r requirements.txt  # install
+# First install ultralytics!!
 
-python export.py --agnostic-nms --weights my-yolo-model.pt --include torchscript
-# This will create my-yolo-model.pt
+yolo export model=my-yolo-model.pt format=torchscript imgsz=640
+# This will create my-yolo-model.torchscript files
 ```
 
 ### Start pythia
 
-To launch pythia, you will need the torchscript model and the names file that was use the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. 
+To launch pythia, you will need the torchscript model and the names file that was used to create the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. 
 
 ```bash
 docker run -d \
@@ -46,7 +45,7 @@ curl -X POST 'http://localhost:8080/predict/' \
     -F "file=@src/test/resources/images/03_00_51_14.jpg;type=image/jpg"
 ```
 
-The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://github.com/fathomnet/models).
+The [model](https://doi.org/10.5281/zenodo.5539915) used in development is from the [FathomNet ModelZoo](https://huggingface.co/FathomNet).
 
 ### Native libraries
 
