@@ -79,7 +79,7 @@ public class Yolov5Service {
         var names = NamesUtil.load(namesPath);
 
         Pipeline pipeline = new Pipeline();
-        pipeline.add(new Resize(resolution)); // required for yolov5? Doesn't work without it
+        pipeline.add(new Resize(resolution)); // resolution should match imgsz in the model
         pipeline.add(new ToTensor());
 
         Translator<Image, DetectedObjects> translator;
@@ -96,7 +96,6 @@ public class Yolov5Service {
                     .build();
         }
 
-
         return Criteria.builder()
                 .optApplication(Application.CV.OBJECT_DETECTION)
                 .setTypes(Image.class, DetectedObjects.class)
@@ -111,7 +110,7 @@ public class Yolov5Service {
 
         try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
             try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
-                // detections are scaled to 640 * 640 image. We have to scale the boxes back to image coords
+                // detections are scaled to resolution x resolution. We have to scale the boxes back to image coords
                 DetectedObjects detection = predictor.predict(img);
                 return BoundingBox.fromYolov5DetectedObjects(img.getWidth(), img.getHeight(), detection, resolution);
             }

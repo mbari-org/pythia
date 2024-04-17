@@ -37,6 +37,6 @@ public class Yolov5ServiceTest {
         assertTrue(!boxes.isEmpty());
         System.out.println(boxes);
         ImageUtil.saveBoundingBoxes(
-                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections.png"), boxes);
+                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections-5.png"), boxes);
     }
 }
