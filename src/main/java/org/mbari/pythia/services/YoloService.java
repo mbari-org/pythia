@@ -24,7 +24,9 @@ import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.transform.Resize;
 import ai.djl.modality.cv.transform.ToTensor;
 import ai.djl.modality.cv.translator.YoloV5Translator;
+import ai.djl.modality.cv.translator.YoloV5TranslatorFactory;
 import ai.djl.modality.cv.translator.YoloV8Translator;
+import ai.djl.modality.cv.translator.YoloV8TranslatorFactory;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.Pipeline;
@@ -82,33 +84,58 @@ public class YoloService {
             "Building yolov{0} criteria for model: {1}", yoloVersion, modelPath);
 
         var names = NamesUtil.load(namesPath);
+        var synset = String.join(",", names);
 
-        Pipeline pipeline = new Pipeline();
-        pipeline.add(new Resize(resolution)); // resolution should match imgsz in the model
-        pipeline.add(new ToTensor());
+//        Pipeline pipeline = new Pipeline();
+//        pipeline.add(new Resize(resolution)); // resolution should match imgsz in the model
+//        pipeline.add(new ToTensor());
+//
+//        Translator<Image, DetectedObjects> translator;
+//        if (yoloVersion == 8) {
+//            System.out.println("Using Yolov8");
+//            translator = new YoloV8Translator.Builder()
+//                    .setPipeline(pipeline)
+//                    .optSynset(names)
+//                    .build();
+//        }
+//        else {
+//            translator = YoloV5Translator.builder()
+//                    .setPipeline(pipeline)
+//                    .optSynset(names)
+//                    .build();
+//        }
+//
+//        return Criteria.builder()
+//                .optApplication(Application.CV.OBJECT_DETECTION)
+//                .setTypes(Image.class, DetectedObjects.class)
+//                .optModelPath(modelPath)
+//                .optTranslator(translator)
+//                .optEngine("PyTorch")
+//                .build();
 
-        Translator<Image, DetectedObjects> translator;
-        if (yoloVersion == 8) {
-            System.out.println("Using Yolov8");
-            translator = new YoloV8Translator.Builder()
-                    .setPipeline(pipeline)
-                    .optSynset(names)
-                    .build();
-        }
-        else {
-            translator = YoloV5Translator.builder()
-                    .setPipeline(pipeline)
-                    .optSynset(names)
-                    .build();
-        }
+        // The following is the "recommended" way to build the criteria. But I doesn't work. It looks for a file, synset.txt
+        // at the same location as the model file. It's not clear how to load my own names.
+        var translatorFactor = switch (yoloVersion) {
+            case 8 -> new YoloV8TranslatorFactory();
+            default -> new YoloV5TranslatorFactory();
+        };
 
         return Criteria.builder()
-                .optApplication(Application.CV.OBJECT_DETECTION)
                 .setTypes(Image.class, DetectedObjects.class)
                 .optModelPath(modelPath)
-                .optTranslator(translator)
                 .optEngine("PyTorch")
+                .optArgument("width", resolution)
+                .optArgument("height", resolution)
+                .optArgument("resize", true)
+                .optArgument("toTensor", true)
+                // for performance optimization maxBox parameter can reduce number of
+                // considered boxes from 8400
+                .optArgument("maxBox", 1000)
+                .optArgument("synset", synset)
+                .optTranslatorFactory(translatorFactor)
                 .build();
+
+
     }
 
     public List<BoundingBox> predict(Path imageFile) throws IOException, ModelException, TranslateException {

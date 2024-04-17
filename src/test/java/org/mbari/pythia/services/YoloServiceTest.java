@@ -22,21 +22,30 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 import org.mbari.pythia.util.ImageUtil;
 
-public class Yolov5ServiceTest {
+public class YoloServiceTest {
 
     @Test
-    public void testPredict() throws Exception {
+    public void testYolov5() throws Exception {
+        runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640);
+    }
+
+    @Test
+    public void testYolov8() throws Exception {
+        runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640);
+    }
+
+    public void runPredict(String modelFile, String namesFile, int yoloVersion, int resolution) throws Exception {
         // Locate image
         var imagePath = locateResource("/images/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b.jpg");
 
         // Locate model
-        var modelPath = locateResource("/models/mbari-mb-benthic-33k.torchscript");
-        var namesPath = locateResource("/models/mbari-mb-benthic-33k.names");
-        var service = new YoloService(modelPath, namesPath, 640, 5);
+        var modelPath = locateResource(modelFile);
+        var namesPath = locateResource(namesFile);
+        var service = new YoloService(modelPath, namesPath, resolution, yoloVersion);
         var boxes = service.predict(imagePath);
         assertTrue(!boxes.isEmpty());
         System.out.println(boxes);
         ImageUtil.saveBoundingBoxes(
-                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections-5.png"), boxes);
+                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections-" + yoloVersion + ".png"), boxes);
     }
 }
