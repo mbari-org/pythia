@@ -1,37 +1,23 @@
-/*
- * Copyright 2023 Monterey Bay Aquarium Research Institute
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.mbari.pythia.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mbari.pythia.util.ResourceUtil.locateResource;
-
 import ai.djl.modality.cv.ImageFactory;
+import org.junit.jupiter.api.Test;
+import org.mbari.pythia.domain.PredictResults;
+import org.mbari.pythia.util.ImageUtil;
+import org.mbari.pythia.util.ResourceUtil;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Test;
-import org.mbari.pythia.domain.PredictResults;
-import org.mbari.pythia.util.ImageUtil;
-import org.mbari.pythia.util.ResourceUtil;
 
-public class Yolov5EventQueueTest {
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mbari.pythia.util.ResourceUtil.locateResource;
 
+public class Yolov8EventQueueTest {
     @Test
     public void testPredict() throws Exception {
         // Locate image
@@ -45,8 +31,8 @@ public class Yolov5EventQueueTest {
                 .toList();
 
         // Locate model
-        var modelPath = locateResource("/models/mbari-mb-benthic-33k.torchscript");
-        var namesPath = locateResource("/models/mbari-mb-benthic-33k.names");
+        var modelPath = locateResource("/models/mbari401k_yolov8.torchscript");
+        var namesPath = locateResource("/models/mbari401k_yolov8.names");
         var service = new YoloEventQueue(modelPath, namesPath, 640, 5);
         var imageFactory = ImageFactory.getInstance();
 
@@ -65,7 +51,7 @@ public class Yolov5EventQueueTest {
                         assertNotNull(pr.image());
                         assertNotNull(pr.boundingBoxes());
                         assertFalse(pr.boundingBoxes().isEmpty());
-                        var output = Paths.get("./target/image-" + j + ".png");
+                        var output = Paths.get("./target/image-v8-" + j + ".png");
                         try {
                             ImageUtil.saveBoundingBoxes(output, pr);
                         } catch (IOException e) {

@@ -90,7 +90,7 @@ public class YoloService {
         Translator<Image, DetectedObjects> translator;
         if (yoloVersion == 8) {
             System.out.println("Using Yolov8");
-            translator = YoloV8Translator.builder()
+            translator = new YoloV8Translator.Builder()
                     .setPipeline(pipeline)
                     .optSynset(names)
                     .build();
