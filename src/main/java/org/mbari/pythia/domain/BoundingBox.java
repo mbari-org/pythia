@@ -74,7 +74,7 @@ public record BoundingBox(String concept, double x, double y, double width, doub
      * @param detectedObjects The output from `predict`
      * @return boxes that are scaled apporopriately to the original source image
      */
-    public static List<BoundingBox> fromYolov5DetectedObjects(
+    public static List<BoundingBox> fromYoloDetectedObjects(
             int imageWidth, int imageHeight, DetectedObjects detectedObjects, int imgsz) {
         int n = detectedObjects.getNumberOfObjects();
         List<BoundingBox> boxes = new ArrayList<>(n);

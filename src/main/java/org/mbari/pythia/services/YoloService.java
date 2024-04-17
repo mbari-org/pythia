@@ -15,28 +15,21 @@
  */
 package org.mbari.pythia.services;
 
-import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.modality.cv.output.DetectedObjects;
-import ai.djl.modality.cv.transform.Resize;
-import ai.djl.modality.cv.transform.ToTensor;
-import ai.djl.modality.cv.translator.YoloV5Translator;
 import ai.djl.modality.cv.translator.YoloV5TranslatorFactory;
-import ai.djl.modality.cv.translator.YoloV8Translator;
 import ai.djl.modality.cv.translator.YoloV8TranslatorFactory;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
-import ai.djl.translate.Pipeline;
 import ai.djl.translate.TranslateException;
-import ai.djl.translate.Translator;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import org.mbari.pythia.domain.BoundingBox;
-import org.mbari.pythia.util.NamesUtil;
 
 /**
  * This service builds the criteria used to load a model. It can also run one-off predictions
@@ -83,8 +76,10 @@ public class YoloService {
         log.log(System.Logger.Level.INFO, 
             "Building yolov{0} criteria for model: {1}", yoloVersion, modelPath);
 
-        var names = NamesUtil.load(namesPath);
-        var synset = String.join(",", names);
+        // --- ORIGINAL METHOD --- Works, but isn't the "recommended" way to build the criteria
+        // https://github.com/deepjavalibrary/djl/issues/2968
+//        var names = NamesUtil.load(namesPath);
+//        var synset = String.join(",", names);
 
 //        Pipeline pipeline = new Pipeline();
 //        pipeline.add(new Resize(resolution)); // resolution should match imgsz in the model
@@ -113,8 +108,8 @@ public class YoloService {
 //                .optEngine("PyTorch")
 //                .build();
 
-        // The following is the "recommended" way to build the criteria. But I doesn't work. It looks for a file, synset.txt
-        // at the same location as the model file. It's not clear how to load my own names.
+        // --- RECOMMENDED METHOD ---
+        // The following is the "recommended" way to build the criteria.
         var translatorFactor = switch (yoloVersion) {
             case 8 -> new YoloV8TranslatorFactory();
             default -> new YoloV5TranslatorFactory();
@@ -130,8 +125,9 @@ public class YoloService {
                 .optArgument("toTensor", true)
                 // for performance optimization maxBox parameter can reduce number of
                 // considered boxes from 8400
-                .optArgument("maxBox", 1000)
-                .optArgument("synset", synset)
+//                .optArgument("maxBox", 1000) // DON"T USE THIS. It will result in few/no detections
+//                .optArgument("synset", synset) // If I manually read the name they can be set like this
+                .optArgument("synsetUrl", namesPath.toUri().toString())
                 .optTranslatorFactory(translatorFactor)
                 .build();
 
@@ -145,7 +141,7 @@ public class YoloService {
             try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                 // detections are scaled to resolution x resolution. We have to scale the boxes back to image coords
                 DetectedObjects detection = predictor.predict(img);
-                return BoundingBox.fromYolov5DetectedObjects(img.getWidth(), img.getHeight(), detection, resolution);
+                return BoundingBox.fromYoloDetectedObjects(img.getWidth(), img.getHeight(), detection, resolution);
             }
         }
     }

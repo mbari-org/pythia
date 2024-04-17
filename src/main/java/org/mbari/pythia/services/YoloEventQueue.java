@@ -105,7 +105,7 @@ public class YoloEventQueue {
                             }
                             if (submission != null) {
                                 var detectedObjects = predictor.predict(submission.image);
-                                var boundingBoxes = BoundingBox.fromYolov5DetectedObjects(
+                                var boundingBoxes = BoundingBox.fromYoloDetectedObjects(
                                         submission.image.getWidth(), submission.image.getHeight(), detectedObjects, resolution);
                                 var predictionResults = new PredictResults(submission.image, boundingBoxes);
                                 submission.future.complete(predictionResults);
