@@ -4,7 +4,6 @@ Pythia is a web service for generating predictions of what is seen in an image u
 
 ![Screenshot](src/site/assets/images/Pythia.png)
 
-
 ## Quick Start
 
 ### Create a torchscript model from pt model
@@ -20,7 +19,7 @@ yolo export model=my-yolo-model.pt format=torchscript imgsz=640
 
 ### Start pythia
 
-To launch pythia, you will need the torchscript model and the names file that was used to create the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed. 
+To launch pythia, you will need the torchscript model and the names file that was used to create the pt model. Note that image requires internet access in order to fetch the native libraries for the host platform when needed.
 
 ```bash
 docker run -d \
@@ -82,20 +81,23 @@ You can run your application in dev mode that enables live coding using:
 ./mvnw compile quarkus:dev -Dquarkus.args="src/test/resources/models/mbari-mb-benthic-33k.torchscript src/test/resources/models/mbari-mb-benthic-33k.names"
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
 ## Packaging and running the application
 
 The application can be packaged using:
+
 ```shell script
 ./mvnw package
 ```
+
 It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
 If you want to build an _über-jar_, execute the following command:
+
 ```shell script
 ./mvnw package -Dquarkus.package.type=uber-jar
 ```
@@ -105,18 +107,20 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 ## Creating a native executable
 
 You can create a native executable using:
+
 ```shell script
 ./mvnw package -Pnative
 ```
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+
 ```shell script
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
 You can then execute your native executable with: `./target/pixel-prophet-1.0.0-SNAPSHOT-runner`
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
 ## Related Guides
 
