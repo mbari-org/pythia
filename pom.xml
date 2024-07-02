@@ -12,9 +12,9 @@
     <palantirJavaFormat.version>2.28.0</palantirJavaFormat.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <pytorch.jni.version>2.3.0-0.28.0</pytorch.jni.version>
-    <pytorch.native.version>2.3.0</pytorch.native.version>
-    <pytorch.version>2.3.0</pytorch.version>
+    <pytorch.jni.version>2.2.2-0.28.0</pytorch.jni.version>
+    <pytorch.native.version>2.2.2</pytorch.native.version>
+    <pytorch.version>2.2.2</pytorch.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>3.12.0</quarkus.platform.version>
