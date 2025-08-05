@@ -47,16 +47,18 @@ public class YoloEventQueue {
     public final Path namesPath;
     private final int resolution;
     private final int yoloVersion;
+    private final float yoloThreshold; // default threshold
     private final BlockingQueue<Submission> queue = new LinkedBlockingQueue<>(100);
     private Thread thread;
     private volatile boolean ok = false;
 
 
-    public YoloEventQueue(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
+    public YoloEventQueue(Path modelPath, Path namesPath, int resolution, int yoloVersion, float yoloThreshold) {
         this.modelPath = modelPath;
         this.namesPath = namesPath;
         this.resolution = resolution;
         this.yoloVersion = yoloVersion;
+        this.yoloThreshold = yoloThreshold;
     }
 
     public CompletableFuture<PredictResults> predict(Path imagePath) {
@@ -94,7 +96,7 @@ public class YoloEventQueue {
             Runnable runnable = () -> {
                 log.log(System.Logger.Level.INFO, "Starting predictor thread using model at " + modelPath);
                 ok = true;
-                var criteria = YoloService.buildCriteria(modelPath, namesPath, resolution, yoloVersion);
+                var criteria = YoloService.buildCriteria(modelPath, namesPath, resolution, yoloVersion, yoloThreshold);
                 try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
                     try (Predictor<Image, DetectedObjects> predictor = model.newPredictor()) {
                         Submission submission = null;

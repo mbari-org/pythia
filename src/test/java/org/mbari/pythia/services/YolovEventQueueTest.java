@@ -34,15 +34,15 @@ public class YolovEventQueueTest {
 
     @Test
     public void testYolov5() throws Exception{
-        runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640);
+        runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640, 0.05f);
     }
 
     @Test
     public void testYolov8() throws Exception{
-        runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640);
+        runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640, 0.05f);
     }
 
-    public void runPredict(String modelFile, String namesFile, int yoloVersion, int resolution) throws Exception {
+    public void runPredict(String modelFile, String namesFile, int yoloVersion, int resolution, float threshold) throws Exception {
         // Locate image
         var imagePaths = List.of(
                         "/images/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b.jpg",
@@ -56,7 +56,7 @@ public class YolovEventQueueTest {
         // Locate model
         var modelPath = locateResource(modelFile);
         var namesPath = locateResource(namesFile);
-        var service = new YoloEventQueue(modelPath, namesPath, resolution, yoloVersion);
+        var service = new YoloEventQueue(modelPath, namesPath, resolution, yoloVersion, threshold);
         var imageFactory = ImageFactory.getInstance();
 
         // Process in service queye

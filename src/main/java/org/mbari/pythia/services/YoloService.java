@@ -42,6 +42,7 @@ public class YoloService {
 
     private final Criteria<Image, DetectedObjects> criteria;
     private final int resolution;
+    private final float threshold; // default threshold
 
     /**
      *
@@ -61,8 +62,13 @@ public class YoloService {
      * @param yoloVersion The version of the Yolov5 model to use. 5 or 8
      */
     public YoloService(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
+        this(modelPath, namesPath, resolution, yoloVersion, 0.05f);
+    }
+
+    public YoloService(Path modelPath, Path namesPath, int resolution, int yoloVersion, float threshold) {
         this.resolution = resolution;
-        this.criteria = buildCriteria(modelPath, namesPath, resolution, yoloVersion);
+        this.threshold = threshold;
+        this.criteria = buildCriteria(modelPath, namesPath, resolution, yoloVersion, threshold);
     }
 
     /**
@@ -71,7 +77,7 @@ public class YoloService {
      * @param namesPath The path to the names file
      * @return Criteria that can be used to obtain a predictor
      */
-    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution, int yoloVersion) {
+    public static Criteria<Image, DetectedObjects> buildCriteria(Path modelPath, Path namesPath, int resolution, int yoloVersion, float threshold) {
 
         log.log(System.Logger.Level.INFO, 
             "Building yolov{0} criteria for model: {1}", yoloVersion, modelPath);
@@ -115,10 +121,12 @@ public class YoloService {
             default -> new YoloV5TranslatorFactory();
         };
 
+
         return Criteria.builder()
                 .setTypes(Image.class, DetectedObjects.class)
                 .optModelPath(modelPath)
                 .optEngine("PyTorch")
+                .optArgument("threshold", threshold) // default threshold
                 .optArgument("width", resolution)
                 .optArgument("height", resolution)
                 .optArgument("resize", true)

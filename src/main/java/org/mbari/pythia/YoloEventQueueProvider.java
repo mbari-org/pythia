@@ -37,12 +37,15 @@ public class YoloEventQueueProvider {
     @ConfigProperty(name = "yolo.version")
     Integer yoloVersion;
 
+    @ConfigProperty(name = "yolo.threshold", defaultValue = "0.05")
+    Float threshold;
+
     @Produces
     @ApplicationScoped
     YoloEventQueue volov5EventQueue(CommandLine.ParseResult parseResult) {
         Path modelPath = parseResult.matchedPositional(0).getValue();
         Path namesPath = parseResult.matchedPositional(1).getValue();
-        var service = new YoloEventQueue(modelPath, namesPath, resolution, yoloVersion);
+        var service = new YoloEventQueue(modelPath, namesPath, resolution, yoloVersion, threshold);
         service.run(); // start the event queue
         return service;
     }
