@@ -34,12 +34,17 @@ public class YolovEventQueueTest {
 
     @Test
     public void testYolov5() throws Exception{
-        runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640, 0.05f);
+        runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640, 0.01f);
     }
 
     @Test
     public void testYolov8() throws Exception{
-        runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640, 0.05f);
+        runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640, 0.01f);
+    }
+
+     @Test
+    public void testYolov8At1280() throws Exception {
+        runPredict("/models/mbari_452k_yolov8.torchscript", "/models/mbari_452k_yolov8.names", 8, 1280, 0.01f);
     }
 
     public void runPredict(String modelFile, String namesFile, int yoloVersion, int resolution, float threshold) throws Exception {
@@ -74,7 +79,7 @@ public class YolovEventQueueTest {
                         assertNotNull(pr.image());
                         assertNotNull(pr.boundingBoxes());
                         assertFalse(pr.boundingBoxes().isEmpty());
-                        var output = Paths.get("./target/image-v" + yoloVersion + "-" + j + ".png");
+                        var output = Paths.get("./target/image-" + j + "-v" + yoloVersion + "-" + resolution + ".png");
                         try {
                             ImageUtil.saveBoundingBoxes(output, pr);
                         } catch (IOException e) {

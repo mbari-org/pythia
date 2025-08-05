@@ -25,13 +25,18 @@ import org.mbari.pythia.util.ImageUtil;
 public class YoloServiceTest {
 
     @Test
-    public void testYolov5() throws Exception {
+    public void testYolov5At640() throws Exception {
         runPredict("/models/mbari-mb-benthic-33k.torchscript", "/models/mbari-mb-benthic-33k.names", 5, 640);
     }
 
     @Test
-    public void testYolov8() throws Exception {
+    public void testYolov8At640() throws Exception {
         runPredict("/models/mbari401k_yolov8.torchscript", "/models/mbari401k_yolov8.names", 8, 640);
+    }
+
+    @Test
+    public void testYolov8At1280() throws Exception {
+        runPredict("/models/mbari_452k_yolov8.torchscript", "/models/mbari_452k_yolov8.names", 8, 1280);
     }
 
     public void runPredict(String modelFile, String namesFile, int yoloVersion, int resolution) throws Exception {
@@ -46,6 +51,6 @@ public class YoloServiceTest {
         assertTrue(!boxes.isEmpty());
         System.out.println(boxes);
         ImageUtil.saveBoundingBoxes(
-                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections-" + yoloVersion + ".png"), boxes);
+                imagePath, Paths.get("./target/112512--1c22e634-2378-4b66-86e4-e00d3ca3ad5b-detections-" + yoloVersion + "-" + resolution + ".png"), boxes);
     }
 }
